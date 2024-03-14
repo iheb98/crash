@@ -14,6 +14,7 @@ db_users = {
 }
 
 users = []
+logged_in_users = []
 
 @app.route('/')
 def index():
@@ -48,6 +49,26 @@ def signup():
     users.append({"email": email, "username": username, "password": password})
 
     return jsonify({"message": "User signed up successfully"})
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        
+        # Check if user exists and password is correct
+        for user in users:
+            if user['username'] == username and user['password'] == password:
+                logged_in_users.append(user)
+                return jsonify({'message': 'Login successful'})
+        
+        return jsonify({'message': 'Invalid username or password'})
+    
+    return render_template('login.html')
+
+@app.route('/users')
+def get_users():
+    return jsonify(users)
 
 if __name__ == '__main__':
     app.run(debug=True)
