@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Date Selection</title>
+  </head>
+  <body>
+    <h2>Select Dates</h2>
+    <label for="start_date">Start Date:</label>
+    <input type="date" id="start_date" />
+    <br /><br />
+    <label for="end_date">End Date:</label>
+    <input type="date" id="end_date" />
+    <br /><br />
+    <button onclick="callWebService()">Submit</button>
+
+    <script>
+      function callWebService() {
+        var startDate = document.getElementById("start_date").value;
+        var endDate = document.getElementById("end_date").value;
+
+        // Check if both dates are selected
+        if (startDate && endDate) {
+          // Make a call to your web service
+          // Replace 'yourWebServiceURL' with the actual URL of your web service
+          var url =
+            "https://crash-dg6v.onrender.com/search?name=John&location=Miami";
+
+          // You can use fetch API to make a GET request to the web service
+          fetch(url)
+            .then((response) => {
+              if (!response.ok) {
+                throw new Error("Network response was not ok");
+              }
+              return response.json();
+            })
+            .then((data) => {
+              // Handle the response data
+              console.log(data);
+            })
+            .catch((error) => {
+              console.error(
+                "There was a problem with the fetch operation:",
+                error
+              );
+            });
+        } else {
+          alert("Please select both start and end dates.");
+        }
+      }
+    </script>
+  </body>
+</html>
