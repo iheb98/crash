@@ -39,15 +39,17 @@ def search():
     return result
 
 
-@app.route('/signup', methods=['GET'])
+@app.route('/signup', methods=['GET', 'POST'])
 def signup():
-    email = request.args.get('email')
-    username = request.args.get('username')
-    password = request.args.get('password')
-
-    # Add the user to the static array
-    users.append({"email": email, "username": username, "password": password})
-
+    if request.method == 'POST':
+        email = request.form['email']
+        username = request.form['username']
+        password = request.form['password']
+        
+        # Add user to static array
+        users.append({'email': email, 'username': username, 'password': password})
+        return jsonify({'message': 'User registered successfully'})
+    
     return jsonify({"message": "User signed up successfully"})
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -64,7 +66,7 @@ def login():
         
         return jsonify({'message': 'Invalid username or password'})
     
-    return render_template('login.html')
+    return jsonify({"message": "User signed in successfully"})
 
 @app.route('/users')
 def get_users():
