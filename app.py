@@ -1,4 +1,4 @@
-from flask import Flask, request, render_template
+from flask import Flask, request, render_template, jsonify
 from flask_cors import CORS
 
 app = Flask(__name__)
@@ -12,6 +12,8 @@ db_users = {
     "Gabriella" : "Paris",
     "Tanaka" : "Tokyo"
 }
+
+users = []
 
 @app.route('/')
 def index():
@@ -34,6 +36,18 @@ def search():
         result = {key: value for key, value in db_users.items() if value == location}
 
     return result
+
+
+@app.route('/signup', methods=['GET'])
+def signup():
+    email = request.args.get('email')
+    username = request.args.get('username')
+    password = request.args.get('password')
+
+    # Add the user to the static array
+    users.append({"email": email, "username": username, "password": password})
+
+    return jsonify({"message": "User signed up successfully"})
 
 if __name__ == '__main__':
     app.run(debug=True)
